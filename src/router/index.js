@@ -1,8 +1,13 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-
-Vue.use(VueRouter)
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import Home from '../views/Home.vue';
+import UsersNew from '../views/UsersNew.vue';
+import UsersIndex from '../views/UsersIndex.vue';
+import Login from '../views/Login.vue';
+import Logout from '../views/Logout.vue';
+import Profile from '../views/Profile.vue';
+import Matches from '../views/Matches.vue';
+Vue.use(VueRouter);
 
 const routes = [
   {
@@ -11,19 +16,41 @@ const routes = [
     component: Home
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/UsersNew',
+    name: 'UsersNew',
+    component: UsersNew
+  },
+  {
+    path: '/UsersIndex',
+    name: 'UsersIndex',
+    component: UsersIndex
+  },
+  {
+    path: '/Login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/Logout',
+    name: 'Logout',
+    component: Logout
+  },
+  {
+    path: '/Profile',
+    name: 'Profile',
+    component: Profile
+  },
+  {
+    path:'/Matches',
+    name:'Matches',
+    component: Matches
   }
-]
+];
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
-})
+});
 
-export default router
+export default router;

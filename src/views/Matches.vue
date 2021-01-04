@@ -1,27 +1,28 @@
 <template>
   <div class="Matches">
-    <h1>{{ message }}</h1>
     <ul>
-    <div v-for="match in matches">
+    <div v-if="!matchesDontExist()" v-for="match in matches">
       <li>
         <h3>{{ match.girl_first_name }} {{ match.girl_last_name }} and {{ match.boy_first_name }} {{ match.boy_last_name }}</h3>
         <button v-on:click="moreInfo(match.girl_id)">See {{match.girl_first_name}}'s Info</button>
         <button v-on:click="moreInfo(match.boy_id)">See {{match.boy_first_name}}'s Info</button>
       </li>
     </div>
+    <h1 v-if="matchesDontExist()">{{ message }}</h1>
     </ul>
     <dialog id="user">
       <form method="dialog">
+        <img v-bind:src="user.image_url" width="100"/>
         <h1>Name: {{ user.first_name }} {{ user.last_name }}</h1>
         <h3 v-if="user.gender=='M'"> Male </h3>
       <h3 v-if="user.gender=='F'"> Female </h3>
         <h2> Birthday: {{ user.birthday }} </h2>
-        <p> Address: {{ user.address }}</p>
-        <p> Phone Number: {{ user.phone_number }}</p>
-        <p> Currently Doing: {{ user.currently_doing }}</p>
-        <p> Education: {{ user.education }}</p>
-        <p> References: {{ user.references }}</p>
-        <p> Additional Info: {{ user.additional_info }}</p>
+        <p v-if="user.address"> Address: {{ user.address }}</p>
+        <p v-if="user.phone_number"> Phone Number: {{ user.phone_number }}</p>
+        <p v-if="user.currently_doing"> Currently Doing: {{ user.currently_doing }}</p>
+        <p v-if="user.education"> Education: {{ user.education }}</p>
+        <p v-if="user.references"> References: {{ user.references }}</p>
+        <p v-if="user.additional_info"> Additional Info: {{ user.additional_info }}</p>
         <button>Close</button>
       </form>
     </dialog>
@@ -36,12 +37,13 @@ import axios from 'axios';
 export default {
   data: function() {
     return {
-      message: "See Matches Here!",
+      message: "",
       matches: [],
       user: {}
     };
   },
-  created: function() {
+  beforeCreate: function() {
+    console.log("attempting matches");
     axios
       .get("api/matches")
       .then(response => {
@@ -58,8 +60,16 @@ export default {
           console.log("user", this.user);
           document.querySelector("#user").showModal();
         });
-      
     },
+    matchesDontExist: function() {
+      if (this.matches.length === 0 ) {
+        console.log("matches not loaded");
+        this.message = "Sorry, you have no matches yet.";
+        return true;
+      } else {
+        return false;
+      }
+    }
   }
 };
 </script>

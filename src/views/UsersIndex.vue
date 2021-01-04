@@ -9,15 +9,18 @@
     <button v-if="userGender!=''" v-on:click="showAll()">Show Everyone</button>
 
     <div v-for="user in filterBy(users, `${userGender}`, 'gender', )">
+      <img v-bind:src="user.image_url" width="100"/>
       <h1>Name: {{ user.first_name }} {{ user.last_name }}</h1>
       <h3 v-if="user.gender=='M'"> Male </h3>
       <h3 v-if="user.gender=='F'"> Female </h3>
       <h2> Birthday: {{ user.birthday }} </h2>
        <button v-if="girlMatch > '' || boyMatch > ''" v-on:click="finishMatch(user)">Match!</button>
       <button v-on:click="moreInfo(user)">View Profile</button>
+      <br/> <br />
     </div>
     <dialog id="current-profile">
       <form method="dialog">
+        <img v-bind:src="currentProfile.image_url" width="100"/>
         <h1>Name: {{ currentProfile.first_name }} {{ currentProfile.last_name }}</h1>
         <h3 v-if="currentProfile.gender=='M'"> Male </h3>
       <h3 v-if="currentProfile.gender=='F'"> Female </h3>

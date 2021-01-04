@@ -1,6 +1,7 @@
 <template>
   <div class="Profile">
     <h1>{{ message }}</h1>
+    <img v-bind:src="user.image_url" width="100" />
     <h2>Name: {{ user.first_name }} {{ user.last_name }}</h2>
    <h3 v-if="user.gender=='M'"> Male </h3>
       <h3 v-if="user.gender=='F'"> Female </h3>

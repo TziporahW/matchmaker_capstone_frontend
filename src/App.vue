@@ -1,42 +1,68 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link v-if="isLoggedIn()" to="/Matches">Matches</router-link> |
-      <router-link v-if="!isLoggedIn()" to="/UsersNew">Create Profile</router-link> |
-      <router-link v-if="isAdmin()" to="/UsersIndex">View Profiles</router-link> |
-      <router-link v-if="!isLoggedIn()" to="/Login">Login</router-link> |
-      <router-link v-if="!isAdmin() && isLoggedIn()" to="/Profile">Profile</router-link> |
-     <router-link v-if="isLoggedIn()" to="/Logout">LogOut</router-link> |
+    <!-- navbar -->
+<nav id="topNav" class="navbar navbar-default mb-3 navbar-expand-lg fixed-top" data-toggle="affix">
+    <!-- this toggler only displays on offcanvas layout -->
+    <a href="#" class="navbar-toggler-anim toggler-offcanvas my-auto collapsed border-0 mr-2" 
+            data-toggle="collapse" 
+            data-target="#offcanvasNavbar">
+        <span></span>
+        <span></span>
+        <span></span>
+    </a>
+    <!-- text brand or logo image goes here -->
+    <a class="navbar-brand page-scroll text-uppercase wide-space link" href="./">
+        MatchMaker
+    </a>
+    <button class="navbar-toggler collapsed border-0" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    <div class="collapse navbar-collapse border-0" id="collapsingNavbar">
+        <ul class="nav navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link page-scroll" v-if="isLoggedIn()" data-target="#one" href="/Matches">Matches</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link page-scroll" v-if="!isAdmin() && isLoggedIn()" data-target="#two" href="/Profile">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link page-scroll" v-if="!isLoggedIn()" data-target="#three" href="/UsersNew">Create Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link page-scroll" v-if="isAdmin()" data-target="#blog" href="/UsersIndex">Profiles</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link page-scroll" v-if="!isLoggedIn()" data-target="#blog" href="/Login">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link page-scroll" v-if="isLoggedIn()" data-target="#blog" href="/Logout">Logout</a>
+            </li>
+        </ul>
     </div>
+</nav>
+<!-- /navbar -->
+    <!-- <div id="nav">
+     done  <router-link to="/">Home</router-link> |
+      done <router-link v-if="isLoggedIn()" to="/Matches">Matches</router-link> |
+      done <router-link v-if="!isLoggedIn()" to="/UsersNew">Create Profile</router-link> |
+       done <router-link v-if="isAdmin()" to="/UsersIndex">View Profiles</router-link> |
+       done <router-link v-if="!isLoggedIn()" to="/Login">Login</router-link> |
+      done <router-link v-if="!isAdmin() && isLoggedIn()" to="/Profile">Profile</router-link> |
+     done <router-link v-if="isLoggedIn()" to="/Logout">LogOut</router-link> |
+    </div> -->
     <div class="alert alert-success" v-if="flashMessage" v-on:click="flashMessage= ''">
   {{ flashMessage }}
-  </div>
+    </div>
+
     <router-view />
+
   </div>
 </template>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>
 <script>
 import axios from "axios"; 

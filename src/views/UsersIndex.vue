@@ -2,13 +2,33 @@
   <div>
     <h1>Users:</h1>
 
-    <button v-if="userGender!='F'" v-on:click="showGirls()">Show Girls Only</button>
+    <button class="btn btn-outline-secondary btn-lg btn-block text-truncate mt-auto" v-if="userGender!='F'" v-on:click="showGirls()">Show Girls Only</button>
 
-    <button v-if="userGender!='M'" v-on:click="showBoys()">Show Boys Only</button>
+    <button class="btn btn-outline-secondary btn-lg btn-block text-truncate mt-auto" v-if="userGender!='M'" v-on:click="showBoys()">Show Boys Only</button>
 
-    <button v-if="userGender!=''" v-on:click="showAll()">Show Everyone</button>
+    <button class="btn btn-outline-secondary btn-lg btn-block text-truncate mt-auto" v-if="userGender!=''" v-on:click="showAll()">Show Everyone</button>
 
-    <div v-for="user in filterBy(users, `${userGender}`, 'gender', )">
+    <div  v-for="user in filterBy(users, `${userGender}`, 'gender', )" class="row pt-4">
+      <div class="col-lg-4 col-sm-6 py-3 wow fadeIn">
+                    
+        <!-- card -->
+        <div class="card card-default h-100">
+            <div class="card-img-top">
+                <img v-bind:src="user.image_url" width="200" class="grayscale img-fluid mx-auto d-block" alt="card image 3">
+            </div>
+            <div class="card-body d-flex flex-column">
+              <h1 class="text-justify">Name: {{ user.first_name }} {{ user.last_name }}</h1>
+              <h4 class="text-justify" v-if="user.gender=='M'"> Male </h4><h4 class="text-justify" v-if="user.gender=='F'"> Female </h4>
+              <h5 class="text-justify"> Birthday: {{ user.birthday }} </h5>
+              <button v-on:click="moreInfo(user)" class="btn btn-outline-secondary btn-lg btn-block text-truncate mt-auto">View Profile</button>
+              <button v-if="girlMatch > '' || boyMatch > ''" v-on:click="finishMatch(user)" class="btn btn-outline-secondary btn-lg btn-block text-truncate mt-auto">Match!</button>
+            </div>
+         </div>
+       <!-- card -->
+                    
+       </div>
+     </div><!-- /row -->
+    <!-- <div v-for="user in filterBy(users, `${userGender}`, 'gender', )">
       <img v-bind:src="user.image_url" width="100"/>
       <h1>Name: {{ user.first_name }} {{ user.last_name }}</h1>
       <h3 v-if="user.gender=='M'"> Male </h3>
@@ -17,7 +37,7 @@
        <button v-if="girlMatch > '' || boyMatch > ''" v-on:click="finishMatch(user)">Match!</button>
       <button v-on:click="moreInfo(user)">View Profile</button>
       <br/> <br />
-    </div>
+    </div> -->
     <dialog id="current-profile">
       <form method="dialog">
         <img v-bind:src="currentProfile.image_url" width="100"/>

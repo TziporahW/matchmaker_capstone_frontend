@@ -1,29 +1,37 @@
 <template>
-  <div class="Matches">
-    <ul>
-    <div v-if="!matchesDontExist()" v-for="match in matches">
-      <li>
-        <h3>{{ match.girl_first_name }} {{ match.girl_last_name }} and {{ match.boy_first_name }} {{ match.boy_last_name }}</h3>
-        <button v-on:click="moreInfo(match.girl_id)">See {{match.girl_first_name}}'s Info</button>
-        <button v-on:click="moreInfo(match.boy_id)">See {{match.boy_first_name}}'s Info</button>
-      </li>
+  <div class="text-center">
+    <div class="container">
+      <div class="card card-default">
+        <div class="card-header" v-if="!matchesDontExist()">
+            <h1>Matches</h1>
+        </div>
+        <h1 v-if="matchesDontExist()">{{ message }}</h1>
+        <div v-if="!matchesDontExist()" v-for="match in matches" class="card-body">
+          <div class="row">
+            <div class="col-lg-12">
+             <h3>{{ match.girl_first_name }} {{ match.girl_last_name }} and {{ match.boy_first_name }} {{ match.boy_last_name }}</h3> <p v-if="match.girl_approval">SHE SAID YES!</p><p v-if="match.boy_approval">HE SAID YES!</p>
+              <button class="btn btn-secondary btn-sm" v-on:click="moreInfo(match.girl_id)">See {{match.girl_first_name}}'s Info</button> <button v-if="!isAdmin() && match.girl_id != getUserId() && !match.boy_approval" v-on:click="sayYes(match)" class="btn btn-secondary btn-sm">Say yes!</button> | | | | 
+              <button class="btn btn-secondary btn-sm" v-on:click="moreInfo(match.boy_id)">See {{match.boy_first_name}}'s Info</button> <button v-if="!isAdmin() && match.boy_id != getUserId() && !match.girl_approval" v-on:click="sayYes(match)" class="btn btn-secondary btn-sm">Say yes!</button>
+            </div>
+          </div>
+        </div>                    
+      </div>
     </div>
-    <h1 v-if="matchesDontExist()">{{ message }}</h1>
-    </ul>
     <dialog id="user">
       <form method="dialog">
-        <img v-bind:src="user.image_url" width="100"/>
+        <img v-bind:src="user.image_url" width="100" class="rounded-circle"/>
         <h1>Name: {{ user.first_name }} {{ user.last_name }}</h1>
         <h3 v-if="user.gender=='M'"> Male </h3>
       <h3 v-if="user.gender=='F'"> Female </h3>
         <h2> Birthday: {{ user.birthday }} </h2>
+        <h4> Email: {{ user.email }} </h4>
         <p v-if="user.address"> Address: {{ user.address }}</p>
         <p v-if="user.phone_number"> Phone Number: {{ user.phone_number }}</p>
         <p v-if="user.currently_doing"> Currently Doing: {{ user.currently_doing }}</p>
         <p v-if="user.education"> Education: {{ user.education }}</p>
         <p v-if="user.references"> References: {{ user.references }}</p>
         <p v-if="user.additional_info"> Additional Info: {{ user.additional_info }}</p>
-        <button>Close</button>
+        <button class="btn btn-secondary btn-sm">Close</button>
       </form>
     </dialog>
   </div>
@@ -33,6 +41,7 @@
 </style>
 
 <script>
+
 import axios from 'axios';
 export default {
   data: function() {
@@ -69,6 +78,48 @@ export default {
       } else {
         return false;
       }
+    },
+    getUserId: function() {
+      return localStorage.getItem("user_id");
+      
+    }, 
+    isAdmin: function() {
+      if (localStorage.getItem("user_id") == 2) {
+        console.log("is admin");
+        return true;
+      } else {
+        return false;
+      }
+    },
+    sayYes: function(match) {
+      var matchId = match.id;
+      if (match.girl_id == localStorage.getItem("user_id")) {
+        console.log("girl is signed in");
+        var params = {
+          girl_approval: true
+        };
+        axios
+          .patch("api/matches/" + matchId, params)
+          .then(response => {
+            console.log("updated");
+          });
+      } else {
+        console.log("boy is logged in");
+        var param = {
+          boy_approval: true
+        };
+        axios
+          .patch("api/matches/" + matchId, param)
+          .then(response => {
+            console.log("updated");
+          });
+      }
+
+      //   var params = {
+
+    //   }
+    //   axios
+    //     .patch("api/matches/" + matchId, params)
     }
   }
 };

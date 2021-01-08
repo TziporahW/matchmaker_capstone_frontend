@@ -7,6 +7,7 @@ import Login from '../views/Login.vue';
 import Logout from '../views/Logout.vue';
 import Profile from '../views/Profile.vue';
 import Matches from '../views/Matches.vue';
+import NotFound from '../views/NotFound.vue';
 Vue.use(VueRouter);
 
 const routes = [
@@ -44,7 +45,13 @@ const routes = [
     path:'/Matches',
     name:'Matches',
     component: Matches
-  }
+  },
+  { path: '/404',
+    component: NotFound 
+  },  
+  { path: '*', 
+    redirect: '/404'
+  }, 
 ];
 
 const router = new VueRouter({

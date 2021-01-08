@@ -1,61 +1,51 @@
 <template>
-  <div>
-    <h1>Users:</h1>
+  <div class="container">
 
     <button class="btn btn-outline-secondary btn-lg btn-block text-truncate mt-auto" v-if="userGender!='F'" v-on:click="showGirls()">Show Girls Only</button>
 
     <button class="btn btn-outline-secondary btn-lg btn-block text-truncate mt-auto" v-if="userGender!='M'" v-on:click="showBoys()">Show Boys Only</button>
 
     <button class="btn btn-outline-secondary btn-lg btn-block text-truncate mt-auto" v-if="userGender!=''" v-on:click="showAll()">Show Everyone</button>
-
-    <div  v-for="user in filterBy(users, `${userGender}`, 'gender', )" class="row pt-4">
-      <div class="col-lg-4 col-sm-6 py-3 wow fadeIn">
-                    
-        <!-- card -->
-        <div class="card card-default h-100">
-            <div class="card-img-top">
-                <img v-bind:src="user.image_url" width="200" class="grayscale img-fluid mx-auto d-block" alt="card image 3">
-            </div>
-            <div class="card-body d-flex flex-column">
-              <h1 class="text-justify">Name: {{ user.first_name }} {{ user.last_name }}</h1>
-              <h4 class="text-justify" v-if="user.gender=='M'"> Male </h4><h4 class="text-justify" v-if="user.gender=='F'"> Female </h4>
-              <h5 class="text-justify"> Birthday: {{ user.birthday }} </h5>
+   <div class="container">
+    <div class="mt-2 wow fadeIn">
+            <div v-for="user in filterBy(users, `${userGender}`, 'gender')" class="card-deck">
+                <!-- card -->
+                <div class="card card-default text-center">
+                    <div class="card-img-top card-zoom">
+                        <a href="./blog-detail.html"><img v-bind:src="user.image_url" width="200" class="img-fluid rounded-circle mx-auto d-block" alt="card image 3"></a>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-text">Name: {{ user.first_name }} {{ user.last_name }}</h1>
+              <h4 class="card-text" v-if="user.gender=='M'"> Male </h4><h4 class="card-text" v-if="user.gender=='F'"> Female </h4>
+              <h5 class="card-text"> Birthday: {{ user.birthday }} </h5>
               <button v-on:click="moreInfo(user)" class="btn btn-outline-secondary btn-lg btn-block text-truncate mt-auto">View Profile</button>
               <button v-if="girlMatch > '' || boyMatch > ''" v-on:click="finishMatch(user)" class="btn btn-outline-secondary btn-lg btn-block text-truncate mt-auto">Match!</button>
+                    </div>
+                </div>
             </div>
-         </div>
-       <!-- card -->
-                    
-       </div>
-     </div><!-- /row -->
-    <!-- <div v-for="user in filterBy(users, `${userGender}`, 'gender', )">
-      <img v-bind:src="user.image_url" width="100"/>
-      <h1>Name: {{ user.first_name }} {{ user.last_name }}</h1>
-      <h3 v-if="user.gender=='M'"> Male </h3>
-      <h3 v-if="user.gender=='F'"> Female </h3>
-      <h2> Birthday: {{ user.birthday }} </h2>
-       <button v-if="girlMatch > '' || boyMatch > ''" v-on:click="finishMatch(user)">Match!</button>
-      <button v-on:click="moreInfo(user)">View Profile</button>
-      <br/> <br />
-    </div> -->
-    <dialog id="current-profile">
-      <form method="dialog">
-        <img v-bind:src="currentProfile.image_url" width="100"/>
-        <h1>Name: {{ currentProfile.first_name }} {{ currentProfile.last_name }}</h1>
-        <h3 v-if="currentProfile.gender=='M'"> Male </h3>
-      <h3 v-if="currentProfile.gender=='F'"> Female </h3>
-        <h2> Birthday: {{ currentProfile.birthday }} </h2>
-        <p v-if="currentProfile.address"> Address: {{ currentProfile.address }}</p>
-        <p v-if="currentProfile.phone_number"> Phone Number: {{ currentProfile.phone_number }}</p>
-        <p v-if="currentProfile.currently_doing"> Currently Doing: {{ currentProfile.currently_doing }}</p>
-        <p v-if="currentProfile.education"> Education: {{ currentProfile.education }}</p>
-        <p v-if="currentProfile.references"> References: {{ currentProfile.references }}</p>
-        <p v-if="currentProfile.additional_info"> Additional Info: {{ currentProfile.additional_info }}</p>
-        <button v-if="girlMatch == '' && boyMatch == ''" v-on:click="matchWith(currentProfile)">Match with</button>
-        <button v-if="girlMatch > '' || boyMatch > ''" v-on:click="finishMatch(currentProfile)">Match!</button>
-        <button>Close</button>
-      </form>
-    </dialog>
+    </div>
+   </div>
+    <div class="text-center"> 
+      <dialog id="current-profile">
+        <form method="dialog">
+          <img v-bind:src="currentProfile.image_url" width="100" class="rounded-circle"/>
+          <h1>Name: {{ currentProfile.first_name }} {{ currentProfile.last_name }}</h1>
+          <h3 v-if="currentProfile.gender=='M'"> Male </h3>
+        <h3 v-if="currentProfile.gender=='F'"> Female </h3>
+          <h2> Birthday: {{ currentProfile.birthday }} </h2>
+          <h4> Email: {{ currentProfile.email }} </h4>
+          <p v-if="currentProfile.address"> Address: {{ currentProfile.address }}</p>
+          <p v-if="currentProfile.phone_number"> Phone Number: {{ currentProfile.phone_number }}</p>
+          <p v-if="currentProfile.currently_doing"> Currently Doing: {{ currentProfile.currently_doing }}</p>
+          <p v-if="currentProfile.education"> Education: {{ currentProfile.education }}</p>
+          <p v-if="currentProfile.references"> References: {{ currentProfile.references }}</p>
+          <p v-if="currentProfile.additional_info"> Additional Info: {{ currentProfile.additional_info }}</p>
+          <button v-if="girlMatch == '' && boyMatch == ''" v-on:click="matchWith(currentProfile)" class="btn btn-outline-secondary btn-lg btn-block text-truncate mt-auto">Match with</button>
+          <button class="btn btn-outline-secondary btn-lg btn-block text-truncate mt-auto" v-if="girlMatch > '' || boyMatch > ''" v-on:click="finishMatch(currentProfile)">Match!</button>
+          <button class="btn btn-outline-secondary btn-lg btn-block text-truncate mt-auto">Close</button>
+        </form>
+      </dialog>
+    </div>
   </div>
 </template>
 

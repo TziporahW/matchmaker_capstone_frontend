@@ -1,16 +1,14 @@
 /* eslint-disable no-undef */
 
 <template>
-  <div>
-    <ul>
-        <li class="text-danger" v-for="error in errors">{{ error }}</li>
-    </ul>
+  <div class="container">
+    
     <form class="form" role="form" autocomplete="off">
       <div class="form-group">
-           <input type="text" class="form-control" id="inputFirstName" v-model="firstName" placeholder="First Name">
+           <input type="text" class="form-control" id="inputFirstName" v-model="firstName" placeholder="First Name" required="">
       </div>
       <div class="form-group">
-           <input type="text" class="form-control" id="inputLastName" v-model="lastName" placeholder="Last Name">
+           <input type="text" class="form-control" id="inputLastName" v-model="lastName" placeholder="Last Name" required="">
       </div>
       <div class="form-group">
           <input type="email" class="form-control" id="inputEmail3" v-model="email" placeholder="Email" required="">
@@ -21,14 +19,20 @@
       <div class="form-group">
           <input type="password" class="form-control" id="inputVerify3" v-model="passwordConfirmation" placeholder="Password Confirmation " required="">
       </div>
-      <div class="form-group">
-           <label for="male"><input type="radio" v-on:click="setMaleProfile()" class="form-control" id="male" value="M" v-model="gender" name="male">Male</label>
-      </div>
       <div>
-           <label for="female"><input v-on:click="setFemaleProfile()" type="radio" class="form-control" id="female" name="gender" value="F" v-model="gender">Female</label>
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{gender}}
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" v-on:click="setMaleProfile()">Male</a>
+            <a class="dropdown-item" v-on:click="setFemaleProfile()">Female</a>
+          </div>
+        </div>
       </div>
-      <div class="form-group">
-           <input type="text" class="form-control" id="inputBirthday" v-model="birthday" placeholder="Birthday">
+      <br />
+      <div style="display:inline" class="form-group">
+           <label>Birthday:<input type="date" class="form-control" id="inputBirthday" v-model="birthday" placeholder="Birthday" required=""></label>
       </div>
       <div class="form-group">
            <input type="text" class="form-control" id="inputAddress" v-model="address" placeholder="Address">
@@ -51,25 +55,13 @@
       <div class="form-group">
            <input type="text" class="form-control" id="inputPicture" v-model="imageUrl" placeholder="Image URL">
       </div>
+      <ul>
+        <li class="text-danger" v-for="error in errors">{{ error }}</li>
+    </ul>
       <div class="form-group">
           <button v-on:click="createUser()" type="submit" class="btn btn-success btn-lg float-right">Create User</button>
       </div>
     </form>
-    <!-- First Name:<input type="text" v-model="firstName" /> <br />
-    Last Name:<input type="text" v-model="lastName" /> <br /> -->
-    <!-- Email:<input type="email" v-model="email" /> <br /> -->
-    <!-- Password:<input type="password" v-model="password" /> <br /> -->
-    <!-- Password Confirmation:<input type="password" v-model="passwordConfirmation" /> <br /> -->
-    <!-- Gender:<input v-on:click="setMaleProfile()" type="radio" id="male" name="gender" value="M" v-model="gender"/><label for="male">Male</label><input v-on:click="setFemaleProfile()" type="radio" id="female" name="gender" value="F" v-model="gender"><label for="female">Female</label> <br /> -->
-    <!-- Birthday:<input type="date" v-model="birthday" /> <br /> -->
-    <!-- Address:<input type="text" v-model="address" /> <br /> -->
-    <!-- Phone Number:<input type="text" v-model="phone_number" /> <br /> -->
-    <!-- Currently Doing:<input type="text" v-model="currently_doing" /> <br /> -->
-    <!-- Education:<input type="text" v-model="education" /> <br /> -->
-    <!-- References:<input type="textbox" v-model="references" /> <br />
-    Additional Info:<input type="text" v-model="additionalInfo" /> <br /> -->
-    <!-- Picture:<input type="text" v-model="imageUrl" /> <br /> -->
-    <!-- <button v-on:click="createUser()">Create User</button> -->
   </div>
 </template>
 
@@ -84,7 +76,7 @@ export default {
       email: "",
       password: "",
       passwordConfirmation: "",
-      gender: "",
+      gender: "Select a gender",
       birthday: "",
       address: "",
       phone_number: "",
@@ -101,11 +93,13 @@ export default {
   },
   methods: {
     setMaleProfile: function() {
-      this.imageUrl = "https://cdn2.vectorstock.com/i/thumb-large/23/81/default-avatar-profile-icon-vector-18942381.jpg";
+      this.imageUrl = "https://thumbs.dreamstime.com/b/male-silhoutte-avatar-default-profile-picture-photo-placeholder-vector-illustration-130555183.jpg";
+      this.gender = "M";
       console.log("profile set to male");
     },
     setFemaleProfile() {
-      this.imageUrl = "https://images.assetsdelivery.com/compings_v2/thesomeday123/thesomeday1231712/thesomeday123171200008.jpg";
+      this.imageUrl = "https://image.shutterstock.com/image-vector/female-silhoutte-avatar-default-profile-260nw-1219366543.jpg";
+      this.gender = "F";
       console.log("profile set to female");
     },
     createUser: function() {
@@ -128,8 +122,9 @@ export default {
       axios
         .post("/api/users", params)
         .then(response => { 
+          console.log("got here");
           this.$parent.flashMessage = "User Created!";
-          this.$router.push("/login");
+          this.$router.push("/Login");
           console.log("successfully created user", response.data);
         })
         .catch(error => {

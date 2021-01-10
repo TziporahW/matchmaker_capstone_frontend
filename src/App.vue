@@ -34,7 +34,7 @@
                 <a class="nav-link page-scroll" v-if="isAdmin()" data-target="#blog" href="/UsersIndex">Profiles</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link page-scroll" v-if="!isLoggedIn()" data-target="#blog" href="/Login">Login</a>
+                <a class="nav-link page-scroll" v-if="!isLoggedIn()" data-target="#blog" href="/">Login</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link page-scroll" v-if="isLoggedIn()" data-target="#blog" href="/Logout">Logout</a>

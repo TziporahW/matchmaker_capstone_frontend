@@ -11,11 +11,11 @@ import NotFound from '../views/NotFound.vue';
 Vue.use(VueRouter);
 
 const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
+  // {
+  //   path: '/',
+  //   name: 'Home',
+  //   component: Home
+  // },
   {
     path: '/UsersNew',
     name: 'UsersNew',
@@ -27,7 +27,7 @@ const routes = [
     component: UsersIndex
   },
   {
-    path: '/Login',
+    path: '/',
     name: 'Login',
     component: Login
   },

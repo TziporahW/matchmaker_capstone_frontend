@@ -18,7 +18,7 @@ export default {
     localStorage.removeItem("jwt");
     localStorage.removeItem("user_id");
     this.$parent.flashMessage = "Logged Out!";
-    this.$router.push("/login");
+    this.$router.push("/");
   }
 };
 </script>

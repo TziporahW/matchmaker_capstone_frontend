@@ -13,8 +13,6 @@
   404 not found error page -->
 <template>
   <div>
-
-<div class="inc_" data-template="./partials/p_header.html"></div>
 <section class="bg-alt">
     <div class="container">
         <h2 class="text-center pb-2"></h2>

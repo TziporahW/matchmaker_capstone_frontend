@@ -15,6 +15,8 @@
       </div>
       <input type="submit" class="btn btn-primary" value="Submit">
     </form>
+     <br />
+    <small class="link" v-on:click="newUser()">New User? Click here to create an account!</small>
   </div>
 </template>
 
@@ -56,6 +58,9 @@ export default {
           this.email = "";
           this.password = "";
         });
+    },
+    newUser: function() {
+      this.$router.push("/UsersNew");
     }
   }
 };

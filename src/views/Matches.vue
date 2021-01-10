@@ -9,7 +9,10 @@
         <div v-if="!matchesDontExist()" v-for="match in matches" class="card-body">
           <div class="row">
             <div class="col-lg-12">
-             <h3>{{ match.girl_first_name }} {{ match.girl_last_name }} and {{ match.boy_first_name }} {{ match.boy_last_name }}</h3> <p v-if="match.girl_approval">SHE SAID YES!</p><p v-if="match.boy_approval">HE SAID YES!</p>
+             <h3>{{ match.girl_first_name }} {{ match.girl_last_name }} and {{ match.boy_first_name }} {{ match.boy_last_name }}</h3> 
+             <div class="inline">
+             <span v-if="match.girl_approval" class="badge bg-success">She said yes!</span> <span v-if="match.boy_approval" class="badge bg-success">He said yes!</span>
+             </div>
               <button class="btn btn-secondary btn-sm" v-on:click="moreInfo(match.girl_id)">See {{match.girl_first_name}}'s Info</button> <button v-if="!isAdmin() && match.girl_id != getUserId() && !match.boy_approval" v-on:click="sayYes(match)" class="btn btn-secondary btn-sm">Say yes!</button> | | | | 
               <button class="btn btn-secondary btn-sm" v-on:click="moreInfo(match.boy_id)">See {{match.boy_first_name}}'s Info</button> <button v-if="!isAdmin() && match.boy_id != getUserId() && !match.girl_approval" v-on:click="sayYes(match)" class="btn btn-secondary btn-sm">Say yes!</button>
             </div>
@@ -38,6 +41,9 @@
 </template>
 
 <style>
+ button {
+   text-align: center;
+ }
 </style>
 
 <script>
@@ -85,7 +91,6 @@ export default {
     }, 
     isAdmin: function() {
       if (localStorage.getItem("user_id") == 2) {
-        console.log("is admin");
         return true;
       } else {
         return false;

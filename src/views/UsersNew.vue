@@ -3,7 +3,7 @@
 <template>
   <div class="container">
     
-    <form class="form" role="form" autocomplete="off">
+    <form v-on:submit.prevent="createUser()" class="form" role="form" autocomplete="off">
       <div class="form-group">
            <input type="text" class="form-control" id="inputFirstName" v-model="firstName" placeholder="First Name" required="">
       </div>
@@ -31,8 +31,8 @@
         </div>
       </div>
       <br />
-      <div style="display:inline" class="form-group">
-           <label>Birthday:<input type="date" class="form-control" id="inputBirthday" v-model="birthday" placeholder="Birthday" required=""></label>
+      <div style="display:inline-block" class="form-group">
+           <label class="">Birthday:<input type="date" class="form-control" id="inputBirthday" v-model="birthday" placeholder="Birthday" required=""></label>
       </div>
       <div class="form-group">
            <input type="text" class="form-control" id="inputAddress" v-model="address" placeholder="Address">
@@ -59,7 +59,8 @@
         <li class="text-danger" v-for="error in errors">{{ error }}</li>
     </ul>
       <div class="form-group">
-          <button v-on:click="createUser()" type="submit" class="btn btn-success btn-lg float-right">Create User</button>
+          <input type="submit" class="btn btn-primary" value="Create User">
+
       </div>
     </form>
   </div>
@@ -124,7 +125,7 @@ export default {
         .then(response => { 
           console.log("got here");
           this.$parent.flashMessage = "User Created!";
-          this.$router.push("/Login");
+          this.$router.push("/");
           console.log("successfully created user", response.data);
         })
         .catch(error => {

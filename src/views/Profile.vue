@@ -1,16 +1,13 @@
 <template>
     <div class="container">
     <div class="row">
-            <div class="col-lg-12">
-                <h2 class="my-1">My Profile</h2>
-            </div>
             <div class="col-lg-9 order-lg-2">
                 <div class="tab-content py-3">
                     <div class="tab-pane py-2 active" id="profile">
                         <div class="row my-2">
                             <div class="col-md-6">
                                 <div id="save_this">
-                                    <h6>{{user.first_name}} {{user.last_name}}</h6>
+                                    <h2>{{user.first_name}} {{user.last_name}}</h2>
                                     <p v-if="user.gender=='M'"> Male </p>
                                     <p v-if="user.gender=='F'"> Female </p>
                                     <p>

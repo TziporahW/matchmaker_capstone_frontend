@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <div v-if="isLoggedIn()"></div>
     <form v-on:submit.prevent="submit()">
       <h1>Login</h1>
       <ul>
@@ -61,7 +62,14 @@ export default {
     },
     newUser: function() {
       this.$router.push("/UsersNew");
-    }
+    },
+    isLoggedIn: function() {
+      if (localStorage.getItem("jwt")) {
+        this.$router.push("/Profile");
+      } else {
+        return false;
+      }
+    },
   }
 };
 </script>

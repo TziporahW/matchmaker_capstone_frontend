@@ -9,34 +9,41 @@
         <div v-if="!matchesDontExist()" v-for="match in matches" class="card-body">
           <div class="row">
             <div class="col-lg-12">
-             <h3>{{ match.girl_first_name }} {{ match.girl_last_name }} and {{ match.boy_first_name }} {{ match.boy_last_name }}</h3> 
+             <h3>{{ match.girl_first_name }} {{ match.girl_last_name }} & {{ match.boy_first_name }} {{ match.boy_last_name }}</h3> 
              <div class="inline">
              <span v-if="match.girl_approval" class="badge bg-success">She said yes!</span> <span v-if="match.boy_approval" class="badge bg-success">He said yes!</span>
              </div>
-              <button class="btn btn-secondary btn-sm" v-on:click="moreInfo(match.girl_id)">See {{match.girl_first_name}}'s Info</button> <button v-if="!isAdmin() && match.girl_id != getUserId() && !match.boy_approval" v-on:click="sayYes(match)" class="btn btn-secondary btn-sm">Say yes!</button> | | | | 
-              <button class="btn btn-secondary btn-sm" v-on:click="moreInfo(match.boy_id)">See {{match.boy_first_name}}'s Info</button> <button v-if="!isAdmin() && match.boy_id != getUserId() && !match.girl_approval" v-on:click="sayYes(match)" class="btn btn-secondary btn-sm">Say yes!</button>
+              <button v-if="match.girl_id != getUserId()" class="btn btn-outline-secondary btn-lg btn-block text-truncate" v-on:click="moreInfo(match.girl_id)">See {{match.girl_first_name}}'s Info</button> <button v-if="!isAdmin() && match.girl_id != getUserId() && !match.boy_approval" v-on:click="sayYes(match)" class="btn btn-secondary btn-sm">Say yes!</button>
+              <button v-if="match.boy_id != getUserId()" class="btn btn-outline-secondary btn-lg btn-block text-truncate" v-on:click="moreInfo(match.boy_id)">See {{match.boy_first_name}}'s Info</button> <button v-if="!isAdmin() && match.boy_id != getUserId() && !match.girl_approval" v-on:click="sayYes(match)" class="btn btn-secondary btn-sm">Say yes!</button>
             </div>
           </div>
         </div>                    
       </div>
     </div>
-    <dialog id="user">
+    <dialog id="user" ref="content">
       <form method="dialog">
         <img v-bind:src="user.image_url" width="100" class="rounded-circle"/>
-        <h1>Name: {{ user.first_name }} {{ user.last_name }}</h1>
-        <h3 v-if="user.gender=='M'"> Male </h3>
-      <h3 v-if="user.gender=='F'"> Female </h3>
-        <h2> Birthday: {{ user.birthday }} </h2>
-        <h4> Email: {{ user.email }} </h4>
-        <p v-if="user.address"> Address: {{ user.address }}</p>
-        <p v-if="user.phone_number"> Phone Number: {{ user.phone_number }}</p>
-        <p v-if="user.currently_doing"> Currently Doing: {{ user.currently_doing }}</p>
-        <p v-if="user.education"> Education: {{ user.education }}</p>
-        <p v-if="user.references"> References: {{ user.references }}</p>
-        <p v-if="user.additional_info"> Additional Info: {{ user.additional_info }}</p>
+        <div id="print_this">
+          <h1>Name: {{ user.first_name }} {{ user.last_name }}</h1>
+          <h3 v-if="user.gender=='M'"> Male </h3>
+          <h3 v-if="user.gender=='F'"> Female </h3>
+          <h2> Birthday: {{ user.birthday }} </h2>
+          <h4> Email: {{ user.email }} </h4>
+          <p v-if="user.address"> Address: {{ user.address }}</p>
+          <p v-if="user.phone_number"> Phone Number: {{ user.phone_number }}</p>
+          <p v-if="user.currently_doing"> Currently Doing: {{ user.currently_doing }}</p>
+          <p v-if="user.education"> Education: {{ user.education }}</p>
+          <p v-if="user.references"> References: {{ user.references }}</p>
+          <p v-if="user.additional_info"> Additional Info: {{ user.additional_info }}</p>
+        </div>
         <button class="btn btn-secondary btn-sm">Close</button>
+        <button v-on:click="generatePDF(user.last_name)">Save as PDF</button>
       </form>
     </dialog>
+    <!-- <script type="application/javascript" src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+    <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/0.9.0rc1/jspdf.min.js"></script> -->
+    <script type="application/javascript" src="https://code.jquery.com/jquery-2.1.3.js"></script>
+    <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
   </div>
 </template>
 
@@ -47,7 +54,8 @@
 </style>
 
 <script>
-
+// import jsPDF from 'jspdf';
+// import 'jspdf-autotable';
 import axios from 'axios';
 export default {
   data: function() {
@@ -119,13 +127,24 @@ export default {
             console.log("updated");
           });
       }
+      this.$router.go();
 
       //   var params = {
 
-    //   }
-    //   axios
-    //     .patch("api/matches/" + matchId, params)
-    }
+      //   }
+      //   axios
+      //     .patch("api/matches/" + matchId, params)
+    },
+    generatePDF: function(name) {
+      const doc = new jspdf('p', 'px', 'a4');
+      const docName = name;
+      const html = document.getElementById("print_this").innerHTML;
+      console.log(html);
+      doc.fromHTML(html, 15, 15, {
+        width: html.width
+      });
+      doc.save(docName + "Resume.pdf");
+    },
   }
 };
 </script>

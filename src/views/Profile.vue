@@ -9,34 +9,37 @@
                     <div class="tab-pane py-2 active" id="profile">
                         <div class="row my-2">
                             <div class="col-md-6">
-                                <h6>{{user.first_name}} {{user.last_name}}</h6>
-                                <p v-if="user.gender=='M'"> Male </p>
-                                <p v-if="user.gender=='F'"> Female </p>
-                                <p>
-                                    <b>Birthday:</b> {{ user.birthday }}
-                                </p>
-                                <p>
-                                    <b>Email:</b> {{ user.email }}
-                                </p>
-                                <p v-if="user.address">
-                                    <b>Address:</b> {{ user.address }}
-                                </p>
-                                <p v-if="user.phone_number">
-                                    <b>Phone Number:</b> {{ user.phone_number }}
-                                </p>
-                                <p v-if="user.currently_doing">
-                                    <b>Currently Doing:</b> {{ user.currently_doing }}
-                                </p>
-                                <p v-if="user.education">
-                                    <b>Education:</b> {{ user.education }}
-                                </p>
-                                <p v-if="user.references">
-                                    <b>References:</b> {{ user.references }}
-                                </p>
-                                <p v-if="user.additional_info">
-                                    <b>Additional Info:</b> {{ user.additional_info }}
-                                </p>
-                                <button class="btn btn-outline-secondary btn-lg btn-block text-truncate mt-auto" v-on:click="updateProfileRequest(user.id)">Update Profile</button>
+                                <div id="save_this">
+                                    <h6>{{user.first_name}} {{user.last_name}}</h6>
+                                    <p v-if="user.gender=='M'"> Male </p>
+                                    <p v-if="user.gender=='F'"> Female </p>
+                                    <p>
+                                        <b>Birthday:</b> {{ user.birthday }}
+                                    </p>
+                                    <p>
+                                        <b>Email:</b> {{ user.email }}
+                                    </p>
+                                    <p v-if="user.address">
+                                        <b>Address:</b> {{ user.address }}
+                                    </p>
+                                    <p v-if="user.phone_number">
+                                        <b>Phone Number:</b> {{ user.phone_number }}
+                                    </p>
+                                    <p v-if="user.currently_doing">
+                                        <b>Currently Doing:</b> {{ user.currently_doing }}
+                                    </p>
+                                    <p v-if="user.education">
+                                        <b>Education:</b> {{ user.education }}
+                                    </p>
+                                    <p v-if="user.references">
+                                        <b>References:</b> {{ user.references }}
+                                    </p>
+                                    <p v-if="user.additional_info">
+                                        <b>Additional Info:</b> {{ user.additional_info }}
+                                    </p>
+                                </div>
+                                <button class="btn btn-outline-secondary btn-lg btn-block text-truncate mt-auto" v-on:click="updateProfileRequest(user.id)">UPDATE PROFILE</button>
+                                <button class="btn btn-outline-secondary btn-lg btn-block text-truncate mt-auto" v-on:click="generatePDF()">SAVE RESUME AS PDF</button>
                             </div>
                         </div>
                         <!--/row-->
@@ -47,7 +50,7 @@
                 <img v-bind:src="user.image_url" class="mx-auto mb-2 img-fluid rounded-circle" />
                 <hr>
             </div>
-             <dialog id="update">
+             <dialog id="update" v-on:submit.prevent="updateProfile(user)">
                 <form class="form" role="form" autocomplete="off">
                     <div class="form-group row">
                         <label class="col-lg-3 col-form-label form-control-label">First name</label>
@@ -111,15 +114,16 @@
                     </div>
                     <div class="form-group row">
                         <label class="col-lg-3 col-form-label form-control-label"></label>
-                        <div class="col-lg-9">
-                            <button class="btn btn-secondary">Cancel</button>
-                            <button class="btn btn-primary" v-on:click="updateProfile(user)">Save Changes</button>
-                            <button class="btn btn-secondary" v-on:click="deleteProfile(user)">Delete Profile</button>
+                        <div class="col-lg-9-">
+                            <button class="btn btn-primary" type="submit" value="submit">Done</button> <button class="btn btn-secondary" v-on:click="deleteProfile(user)">Delete Profile</button>
+                            
                         </div>
                     </div>
                 </form>
             </dialog>
         </div>
+    <script type="application/javascript" src="https://code.jquery.com/jquery-2.1.3.js"></script>
+    <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
     </div>
 </template>
 
@@ -133,16 +137,6 @@ export default {
     return {
       message: "This is my profile!",
       user: {},
-      firstName: "",
-      lastName: "",
-      birthday: "",
-      address: "",
-      phone_number: "",
-      currently_doing: "",
-      education: "",
-      references: "",
-      additionalInfo: "",
-      imageUrl: ""
     };
   },
   created: function() {
@@ -167,8 +161,8 @@ export default {
         currently_doing: user.currently_doing,
         education: user.education,
         references: user.references,
-        additional_info: user.additionalInfo,
-        image_url: user.imageUrl
+        additional_info: user.additional_info,
+        image_url: user.image_url
       }; 
       axios
         .patch("api/users/" + localStorage.getItem("user_id"), params)
@@ -178,8 +172,8 @@ export default {
         })
         .catch(error => {
           this.errors = error.response.data.errors;
-       
         });
+      document.querySelector("#update").close();
     },
     deleteProfileRequest: function() {
       document.querySelector("#delete").showModal();
@@ -190,9 +184,20 @@ export default {
         .then(response => {
           this.$parent.flashMessage = "Deleted!";
           console.log("deleted");
-          this.$router.push("/Logout");
+          localStorage.removeItem("jwt");
+          localStorage.removeItem("user_id");
+          this.$router.push("/UsersNew");
         });
-    }
+    },
+    generatePDF: function(id) {
+      const doc = new jspdf('p', 'px', 'a4');
+	  const html = document.getElementById("save_this").innerHTML;
+      doc.fromHTML(html, 15, 15, {
+        width: html.width
+      });
+      doc.save("myresume.pdf");
+    },
+
   }
 };
 </script>

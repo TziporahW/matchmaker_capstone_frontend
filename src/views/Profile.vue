@@ -140,9 +140,14 @@ export default {
     axios
       .get("api/users/" + localStorage.getItem("user_id"))
       .then(response => {
-        this.user = response.data;
-        console.log("profile", response.data);
+        if (localStorage.getItem("user_id") == 2) {
+          this.$router.push("/UsersIndex");
+        } else {
+          this.user = response.data;
+          console.log("profile", response.data);
+        }
       });
+      
   },
   methods: {
     updateProfileRequest: function() {

@@ -41,16 +41,16 @@
            <input type="text" class="form-control" id="inputPhoneNumber" v-model="phone_number" placeholder="Phone Number">
       </div>
       <div class="form-group">
-           <input type="text" class="form-control" id="inputCurrentlyDoing" v-model="currently_doing" placeholder="Currently Doing">
+           <input type=text class="form-control" id="inputCurrentlyDoing" v-model="currently_doing" placeholder="Currently Doing">
       </div>
       <div class="form-group">
-           <input type="text" class="form-control" id="inputEducation" v-model="education" placeholder="Education">
+           <textarea rows="4" cols="50" class="form-control" id="inputEducation" v-model="education" placeholder="Education"></textarea>
       </div>
       <div class="form-group">
-           <input type="text" class="form-control" id="inputReferences" v-model="references" placeholder="References">
+           <textarea rows="4" cols="50" class="form-control" id="inputReferences" v-model="references" placeholder="References"></textarea>
       </div>
       <div class="form-group">
-           <input type="text" class="form-control" id="inputAdditionalInfo" v-model="additionalInfo" placeholder="Additional Info">
+           <textarea rows="4" cols="50" class="form-control" id="inputAdditionalInfo" v-model="additionalInfo" placeholder="Additional Info"></textarea>
       </div>
       <div class="form-group">
            <input type="text" class="form-control" id="inputPicture" v-model="imageUrl" placeholder="Image URL">

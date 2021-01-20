@@ -18,6 +18,7 @@
                         <h1 class="card-text">Name: {{ user.first_name }} {{ user.last_name }}</h1>
               <h4 class="card-text" v-if="user.gender=='M'"> Male </h4><h4 class="card-text" v-if="user.gender=='F'"> Female </h4>
               <h5 class="card-text"> Birthday: {{ user.birthday }} </h5>
+              <h5 class="card-text"> Height: {{ user.height }} </h5>
               <button v-on:click="moreInfo(user)" class="btn btn-outline-secondary btn-lg btn-block text-truncate mt-auto">View Profile</button>
               <button v-if="girlMatch > '' || boyMatch > ''" v-on:click="finishMatch(user)" class="btn btn-outline-secondary btn-lg btn-block text-truncate mt-auto">Match!</button>
                     </div>
@@ -33,13 +34,20 @@
           <h3 v-if="currentProfile.gender=='M'"> Male </h3>
         <h3 v-if="currentProfile.gender=='F'"> Female </h3>
           <h2> Birthday: {{ currentProfile.birthday }} </h2>
+          <h2> Height: {{ currentProfile.height }} </h2>
           <h4> Email: {{ currentProfile.email }} </h4>
           <p v-if="currentProfile.address"> Address: {{ currentProfile.address }}</p>
           <p v-if="currentProfile.phone_number"> Phone Number: {{ currentProfile.phone_number }}</p>
+          <p v-if="currentProfile.parents"> Parents: {{ currentProfile.parents }}</p>
+          <p v-if="currentProfile.siblings"> Siblings/Family Info: {{ currentProfile.siblings }}</p>
+          <p v-if="currentProfile.shul"> Shul: {{ currentProfile.shul }}</p>
           <p v-if="currentProfile.currently_doing"> Currently Doing: {{ currentProfile.currently_doing }}</p>
           <p v-if="currentProfile.education"> Education: {{ currentProfile.education }}</p>
           <p v-if="currentProfile.references"> References: {{ currentProfile.references }}</p>
+          <p v-if="currentProfile.summers"> Summers: {{ currentProfile.summers }}</p>
           <p v-if="currentProfile.additional_info"> Additional Info: {{ currentProfile.additional_info }}</p>
+          <p v-if="currentProfile.shadchan_info && isAdmin()"> Shadchan Info: {{ currentProfile.shadchan_info }}</p>
+          <p v-if="isAdmin()"> Looking For: {{ currentProfile.looking_for }}</p>
           <button v-if="girlMatch == '' && boyMatch == ''" v-on:click="matchWith(currentProfile)" class="btn btn-outline-secondary btn-lg btn-block text-truncate mt-auto">Match with</button>
           <button class="btn btn-outline-secondary btn-lg btn-block text-truncate mt-auto" v-if="girlMatch > '' || boyMatch > ''" v-on:click="finishMatch(currentProfile)">Match!</button>
           <button class="btn btn-outline-secondary btn-lg btn-block text-truncate mt-auto">Close</button>
@@ -105,6 +113,14 @@ export default {
     showAll: function() {
       this.userGender = "";
       console.log("everyone shown");
+    },
+    isAdmin: function() {
+      if (localStorage.getItem("user_id") == 2) {
+        console.log("is admin");
+        return true;
+      } else {
+        return false;
+      }
     },
     finishMatch: function(currentProfile) {
       if (currentProfile.gender === "M") {

@@ -14,6 +14,9 @@
                                         <b>Birthday:</b> {{ user.birthday }}
                                     </p>
                                     <p>
+                                        <b>Height:</b> {{ user.height }}
+                                    </p>
+                                    <p>
                                         <b>Email:</b> {{ user.email }}
                                     </p>
                                     <p v-if="user.address">
@@ -22,11 +25,23 @@
                                     <p v-if="user.phone_number">
                                         <b>Phone Number:</b> {{ user.phone_number }}
                                     </p>
+                                    <p v-if="user.parents">
+                                        <b>Parents:</b> {{ user.parents }}
+                                    </p>
+                                    <p v-if="user.siblings">
+                                        <b>Siblings/Family Info:</b> {{ user.siblings }}
+                                    </p>
+                                    <p v-if="user.shul">
+                                        <b>Shul:</b> {{ user.shul }}
+                                    </p>
                                     <p v-if="user.currently_doing">
                                         <b>Currently Doing:</b> {{ user.currently_doing }}
                                     </p>
                                     <p v-if="user.education">
                                         <b>Education:</b> {{ user.education }}
+                                    </p>
+                                    <p v-if="user.summers">
+                                        <b>Summers:</b> {{ user.summers }}
                                     </p>
                                     <p v-if="user.references">
                                         <b>References:</b> {{ user.references }}
@@ -35,6 +50,13 @@
                                         <b>Additional Info:</b> {{ user.additional_info }}
                                     </p>
                                 </div>
+                                    <p v-if="user.shadchan_info">
+                                        <b>Additional Info (for shadchan only):</b> {{ user.shadchan_info }}
+                                    </p>
+                                    <p v-if="user.looking_for">
+                                        <b>Looking For:</b> {{ user.looking_for }}
+                                    </p>
+                                
                                 <button class="btn btn-outline-secondary btn-lg btn-block text-truncate mt-auto" v-on:click="updateProfileRequest(user.id)">UPDATE PROFILE</button>
                                 <button class="btn btn-outline-secondary btn-lg btn-block text-truncate mt-auto" v-on:click="generatePDF()">SAVE RESUME AS PDF</button>
                             </div>
@@ -68,6 +90,12 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label class="col-lg-3 col-form-label form-control-label">Height</label>
+                        <div class="col-lg-9">
+                            <input v-model="user.height" class="form-control" type="text" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="col-lg-3 col-form-label form-control-label">Address</label>
                         <div class="col-lg-9">
                             <input v-model="user.address" class="form-control" type="text" value="" />
@@ -77,6 +105,24 @@
                         <label class="col-lg-3 col-form-label form-control-label">Phone Number</label>
                         <div class="col-lg-9">
                             <input v-model="user.phone_number" class="form-control" type="text" value="" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label form-control-label">Parents</label>
+                        <div class="col-lg-9">
+                            <input v-model="user.parents" class="form-control" type="text" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label form-control-label">Siblings/Family Info</label>
+                        <div class="col-lg-9">
+                            <input v-model="user.siblings" class="form-control" type="text" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label form-control-label">Shul</label>
+                        <div class="col-lg-9">
+                            <input v-model="user.shul" class="form-control" type="text" />
                         </div>
                     </div>
                     <div class="form-group row">
@@ -92,15 +138,33 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label class="col-lg-3 col-form-label form-control-label">Summers</label>
+                        <div class="col-lg-9">
+                            <input v-model="user.summers" class="form-control" type="text" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="col-lg-3 col-form-label form-control-label">References</label>
                         <div class="col-lg-9">
                             <input v-model="user.references" class="form-control" type="text" value="" />
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-lg-3 col-form-label form-control-label">Additional Info</label>
+                        <label class="col-lg-3 col-form-label form-control-label">Additional Info (on resume)</label>
                         <div class="col-lg-9">
                             <input v-model="user.additional_info" class="form-control" type="text" value="" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label form-control-label">Additional Info (for shadchan only)</label>
+                        <div class="col-lg-9">
+                            <input v-model="user.shadchan_info" class="form-control" type="text" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label form-control-label">Looking For</label>
+                        <div class="col-lg-9">
+                            <input v-model="user.looking_for" class="form-control" type="text" />
                         </div>
                     </div>
                     <div class="form-group row">
@@ -164,7 +228,14 @@ export default {
         education: user.education,
         references: user.references,
         additional_info: user.additional_info,
-        image_url: user.image_url
+        image_url: user.image_url,
+        parents: user.parents,
+        siblings: user.siblings,
+        shul: user.shul,
+        summers: user.summers,
+        height: user.height,
+        shadchan_info: user.shadchan_info,
+        looking_for: user.looking_for,
       }; 
       axios
         .patch("api/users/" + localStorage.getItem("user_id"), params)

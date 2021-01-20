@@ -57,12 +57,23 @@
     </div>
 
     <router-view />
+    <br />
+      <br />
+    <footer id="footer">
+    <div class="container">
+        <div class="text-center text-normal">
+            <a href="mailto:matchmakershadchan@gmail.com">Contact THE SHADCHAN with any questions, comments or concerns! <i class="ion-email"></i></a>
+        </div>
+    </div>
+</footer>
 
   </div>
 </template>
 
 <style>
-
+ footer {
+   padding: .025cm;
+ }
 </style>
 <script>
 import axios from "axios"; 

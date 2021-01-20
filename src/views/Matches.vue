@@ -33,11 +33,18 @@
           <h4> Email: {{ user.email }} </h4>
           <p v-if="user.address"> Address: {{ user.address }}</p>
           <p v-if="user.phone_number"> Phone Number: {{ user.phone_number }}</p>
+          <p v-if="user.parents"> Parents: {{ user.parents }}</p>
+          <p v-if="user.siblings"> Siblings/Family Info: {{ user.siblings }}</p>
+          <p v-if="user.shul"> Shul: {{ user.shul }}</p>
           <p v-if="user.currently_doing"> Currently Doing: {{ user.currently_doing }}</p>
           <p v-if="user.education"> Education: {{ user.education }}</p>
           <p v-if="user.references"> References: {{ user.references }}</p>
+          <p v-if="user.summers"> Summers: {{ user.summers }}</p>
           <p v-if="user.additional_info"> Additional Info: {{ user.additional_info }}</p>
         </div>
+          <p v-if="user.shadchan_info && isAdmin()"> Shadchan Info: {{ user.shadchan_info }}</p>
+          <p v-if="isAdmin()"> Looking For: {{ user.looking_for }}</p>
+        
         <button class="btn btn-secondary btn-sm">CLOSE</button> <button class="btn btn-secondary btn-sm" v-on:click="generatePDF(user.last_name)">SAVE RESUME AS A PDF</button>
       </form>
     </dialog>

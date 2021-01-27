@@ -115,7 +115,7 @@ export default {
       console.log("everyone shown");
     },
     isAdmin: function() {
-      if (localStorage.getItem("user_id") == 2) {
+      if (localStorage.getItem("admin") == "true") {
         console.log("is admin");
         return true;
       } else {

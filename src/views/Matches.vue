@@ -106,7 +106,7 @@ export default {
       
     }, 
     isAdmin: function() {
-      if (localStorage.getItem("user_id") == 2) {
+      if (localStorage.getItem("admin") == "true") {
         return true;
       } else {
         return false;

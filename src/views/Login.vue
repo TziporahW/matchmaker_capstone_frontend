@@ -44,8 +44,9 @@ export default {
           axios.defaults.headers.common["Authorization"] =
             "Bearer " + response.data.jwt;
           localStorage.setItem("jwt", response.data.jwt);
+          localStorage.setItem("admin", response.data.admin);
           localStorage.setItem("user_id", response.data.user_id);
-          if (localStorage.getItem("user_id") == 2) {
+          if (localStorage.getItem("admin") == "true") {
             console.log("testing");
             this.$parent.flashMessage = "Logged In!";
             this.$router.push("/UsersIndex");
